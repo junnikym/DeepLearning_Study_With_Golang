@@ -51,6 +51,12 @@ func NewMatrix(row, col int, value []float64) *Matrix {
 	}
 }
 
+func (m *Matrix) Init(row, col int) {
+	m.value = make([]float64, row*col)
+	m.row = row
+	m.col = col
+}
+
 /*----- ----- ----- ----- ----- ----- ----- -----//
 	Matrix		| getter
 //----- ----- ----- ----- ----- ----- ----- -----*/
@@ -78,6 +84,14 @@ func (m Matrix) Print() {
 		}
 		fmt.Print("\n")
 	}
+}
+
+/*----- ----- ----- ----- ----- ----- ----- -----//
+	Matrix		| setter
+//----- ----- ----- ----- ----- ----- ----- -----*/
+
+func (m *Matrix) ReplaceAt(r, c int, value float64) {
+	m.value[(r*m.col + c)] = value
 }
 
 /*----- ----- ----- ----- ----- ----- ----- -----//

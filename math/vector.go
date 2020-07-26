@@ -40,6 +40,11 @@ func NewVector(size int, value []float64) *Vector {
 	}
 }
 
+func (v *Vector) Init(size int) {
+	v.size = size
+	v.value = make([]float64, size)
+}
+
 /*----- ----- ----- ----- ----- ----- ----- -----//
 	Vector		| getter
 //----- ----- ----- ----- ----- ----- ----- -----*/
@@ -57,6 +62,14 @@ func (v Vector) Print() {
 		fmt.Print(" ", v.value[i], ",")
 	}
 	fmt.Print("\n")
+}
+
+/*----- ----- ----- ----- ----- ----- ----- -----//
+	Vector		| setter
+//----- ----- ----- ----- ----- ----- ----- -----*/
+
+func (v *Vector) ReplaceAt(at int, value float64) {
+	v.value[at] = value
 }
 
 /*----- ----- ----- ----- ----- ----- ----- -----//
