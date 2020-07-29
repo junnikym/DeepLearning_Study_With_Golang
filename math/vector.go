@@ -59,7 +59,7 @@ func (v Vector) Size() int {
 
 func (v Vector) Print() {
 	for i := 0; i < v.size; i++ {
-		fmt.Print(" ", v.value[i], ",")
+		fmt.Printf(" %.5f,", v.value[i])
 	}
 	fmt.Print("\n")
 }

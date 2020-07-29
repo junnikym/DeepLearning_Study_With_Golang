@@ -2,26 +2,37 @@ package main
 
 import (
 	"fmt"
-	"learning/deep_learning_go/math"
+
+	"github.com/FCNN/math"
+	"github.com/FCNN/neuron"
 )
 
 func main() {
-	mat_a := math.NewMatrix(4, 4, []float64{
-		11, 12, 13, 14,
-		21, 22, 23, 24,
-		31, 32, 33, 34,
-		41, 42, 43, 44,
+	input := math.NewVector(2, []float64{
+		0.0, 0.0,
 	})
 
-	vec_a := math.NewVector(4, []float64{
-		1, 2, 3, 4,
+	target := math.NewVector(1, []float64{
+		0.3,
 	})
 
-	fmt.Println(mat_a)
-	fmt.Println(vec_a)
+	output := math.CreateVector(2)
 
-	result := math.CreateVector(4)
-	mat_a.MulTrans(vec_a, result)
+	nn := neuron.NewNN(2, 1, 1)
+	nn.SetAlpha(0.1)
 
-	result.Print()
+	for i := 0; i < 100; i++ {
+		fmt.Println("loop [", i, "] :")
+
+		nn.SetInput(input)
+
+		nn.PropForward()
+
+		nn.CopyOutput(output, false)
+		output.Print()
+
+		nn.PropBackward(target)
+
+		fmt.Print("\n")
+	}
 }

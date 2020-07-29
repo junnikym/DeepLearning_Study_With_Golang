@@ -3,7 +3,7 @@ package neuron
 import (
 	"math"
 
-	mat "github.com/FNCC/math"
+	mat "github.com/FCNN/math"
 )
 
 // Activation functions
@@ -14,10 +14,10 @@ func Sigmoid(x float64) float64 {
 }
 
 func ReLU(x float64) float64 {
-	if x > 0.0 {
-		return x
-	} else {
+	if x < 0.0 {
 		return 0.0
+	} else {
+		return x
 	}
 }
 
@@ -25,11 +25,12 @@ func LReLU(x float64) float64 {
 	if x > 0.0 {
 		return 1.0
 	} else {
-		return 0.01
+		return 0.01 * x
 	}
 }
 
-// Gradient function
+// Gradient
+//----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 func SigmoidGradient(y float64) float64 {
 	return (1.0 - y) * y
@@ -52,6 +53,7 @@ func LReLUGradient(y float64) float64 {
 }
 
 // apply activation function to Vector
+//----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 func SigmoidToVec(v *mat.Vector) {
 	for i := 0; i < v.Size()-1; i++ { // -1 : for not include bias

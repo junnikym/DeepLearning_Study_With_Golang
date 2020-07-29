@@ -99,10 +99,10 @@ func (m *Matrix) ReplaceAt(r, c int, value float64) {
 //----- ----- ----- ----- ----- ----- ----- -----*/
 
 func (m *Matrix) Mul(rhs, result *Vector) {
-	if m.row > rhs.size {
+	if m.row > result.size {
 		panic(ErrNotEqualShape)
 	}
-	if m.col > result.size {
+	if m.col > rhs.size {
 		panic(ErrNotEqualShape)
 	}
 
@@ -136,9 +136,7 @@ func (m *Matrix) MulTrans(rhs, result *Vector) {
 		i = c
 
 		for r := 0; r < m.row; r++ {
-
 			result.value[c] += m.value[i] * rhs.value[r]
-			fmt.Println("m : ", m.value[i], " * r : ", rhs.value[c], " index : ", i, ", ", c)
 			i += m.col
 		}
 	}
