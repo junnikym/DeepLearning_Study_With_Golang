@@ -7,7 +7,7 @@ type GridWorld struct {
 	cell          []Cell
 }
 
-func CreateGridWorld(width, height int) *GridWorld {
+func NewGridWorld(width, height int) *GridWorld {
 	return &GridWorld{
 		cell:   make([]Cell, width*height),
 		width:  width,
@@ -16,30 +16,34 @@ func CreateGridWorld(width, height int) *GridWorld {
 }
 
 func (g *GridWorld) GetCell(x, y int) *Cell {
-	if g.isInside(x, y) == false {
+	if g.IsInside(x, y) == false {
 		panic("Out of Grid Range")
 	}
 
 	return &g.cell[x+(g.width*y)]
 }
 
-func (g *GridWorld) isInside(x, y int) bool {
-	if x >= g.width && x < 0 {
+func (g *GridWorld) IsInside(x, y int) bool {
+	if x >= g.width || x < 0 {
 		return false
 	}
-	if y >= g.height && y < 0 {
+	if y >= g.height || y < 0 {
 		return false
 	}
 
 	return true
 }
 
+func (g *GridWorld) IsAgentInside(a Agent) bool {
+	return g.IsInside(a.x, a.y)
+}
+
 func printSigned(a float64) {
 	if a > 0 {
-		fmt.Printf(" +%1.1f  ", a)
+		fmt.Printf(" +%1.2f ", a)
 
 	} else if a < 0 {
-		fmt.Printf("  %1.1f  ", a)
+		fmt.Printf(" %1.2f ", a)
 
 	} else { // a == 0
 		fmt.Printf("  0.0  ")
@@ -49,7 +53,7 @@ func printSigned(a float64) {
 
 func (g *GridWorld) Print() {
 
-	for y := 0; y < g.height; y++ {
+	for y := g.height - 1; y >= 0; y-- {
 		for x := 0; x < g.width; x++ {
 			fmt.Print("----------------------")
 		}
@@ -58,7 +62,7 @@ func (g *GridWorld) Print() {
 		 * Drawing Cell -> Up
 		 ----------------------------------------*/
 		for x := 0; x < g.width; x++ {
-			fmt.Print("|       ") // left blank
+			fmt.Printf("|(%2d,%2d)", x, y) // left blank
 
 			printSigned(
 				g.GetCell(x, y).GetQValue(Up),
@@ -77,7 +81,10 @@ func (g *GridWorld) Print() {
 				g.GetCell(x, y).GetQValue(Left),
 			)
 
-			fmt.Print("       ") // middle blank
+			// middle blank
+			reward := g.cell[x+g.width*y].GetReward()
+
+			printSigned(reward)
 
 			printSigned( // print right
 				g.GetCell(x, y).GetQValue(Right),
